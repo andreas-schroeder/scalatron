@@ -1,15 +1,23 @@
 *.class
+*.log
 *~
+.cache
+.history
+.lib/
 .idea
 .idea_modules
+
 target
+
 *.iml
 *.xml
 *.zip
+
 dist/
 users/
 doc/html/
 devdoc/html/
+
 Scalatron/bin/
 Scalatron/lib/
 Scalatron/out/
@@ -24,4 +32,20 @@ ScalaMarkdown/bin/
 ScalaMarkdown/lib/
 ScalaMarkdown/out/
 ScalaMarkdown/src/META-INF/
+
 __MACOSX
+
+# sbt specific
+.cache
+.history
+.lib/
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
