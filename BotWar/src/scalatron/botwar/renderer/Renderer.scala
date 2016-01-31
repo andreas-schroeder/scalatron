@@ -3,13 +3,13 @@
   */
 package scalatron.botwar.renderer
 
-import scalatron.botwar.Display.RenderTarget
-
-import scalatron.botwar._
-import akka.util.Duration
 import java.awt.Color
-import akka.dispatch.{ExecutionContext, Await, Future}
-import scalatron.core.{ScalatronInward, PermanentConfig}
+
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future, ExecutionContext}
+import scalatron.botwar.Display.RenderTarget
+import scalatron.botwar._
+import scalatron.core.{PermanentConfig, ScalatronInward}
 
 
 object Renderer {

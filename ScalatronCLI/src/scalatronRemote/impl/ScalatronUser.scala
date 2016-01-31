@@ -4,12 +4,11 @@
 package scalatronRemote.impl
 
 import scalatronRemote.api.ScalatronRemote
-import util.parsing.json.JSONFormat
 import scalatronRemote.api.ScalatronRemote._
 import scalatronRemote.impl.Connection.HttpFailureCodeException
 import org.apache.http.HttpStatus
 import scalatronRemote.api.ScalatronRemote.BuildResult.BuildMessage
-
+import argonaut._, Argonaut._
 
 case class ScalatronUser(
     name: String,
@@ -113,7 +112,7 @@ case class ScalatronUser(
         try {
             val attributesJson =
                 "{ \"attributes\" : [ " +
-                    map.map(kv => {"{ \"name\" : \"" + kv._1 + "\", \"value\" : " + JSONFormat.defaultFormatter(kv._2) + " }"}).mkString(",\n") +
+                    map.map(kv => {"{ \"name\" : \"" + kv._1 + "\", \"value\" : " + jString(kv._2).nospaces + " }"}).mkString(",\n") +
                     " ] }"
             scalatron.connection.PUT_json_nothing(resourceUrl, attributesJson)
         } catch {
@@ -210,7 +209,7 @@ case class ScalatronUser(
             val sourceFilesJson =
                 "{ \"files\" : [\n" +
                     sourceFileCollection.map(sf => {
-                        val codeJson = JSONFormat.defaultFormatter(sf.code)
+                        val codeJson = jString(sf.code).nospaces
                         "{ \"filename\" : \"" + sf.filename + "\", \"code\" : " + codeJson + " }"
                     }).mkString(",\n") +
                     "]}"
@@ -340,7 +339,7 @@ case class ScalatronUser(
                     "\"label\" : \"" + label + "\", " +
                     "\"files\" : [\n" +
                     sourceFileCollection.map(sf => {
-                        val codeJson = JSONFormat.defaultFormatter(sf.code)
+                        val codeJson = jString(sf.code).nospaces
                         "{ \"filename\" : \"" + sf.filename + "\", \"code\" : " + codeJson + " }"
                     }).mkString(",\n") +
                     "]}"
@@ -424,7 +423,7 @@ case class ScalatronUser(
                 "{ " +
                     "\"config\" : {\n" +
                     argMap.map(arg => {
-                        val valueJson = JSONFormat.defaultFormatter(arg._2)
+                        val valueJson = jString(arg._2).nospaces
                         " \"" + arg._1 + "\" : " + valueJson
                     }).mkString(",\n") +
                     "} }"

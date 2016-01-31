@@ -3,11 +3,9 @@ package scalatron.core
 /** This material is intended as a community resource and is licensed under the
   * Creative Commons Attribution 3.0 Unported License. Feel free to use, modify and share it.
   */
-
-import akka.util.Duration
-import akka.dispatch.{ExecutionContext, Future, Await}
+import scala.concurrent.duration.Duration
+import scala.concurrent.{ExecutionContext, Future, Await}
 import akka.actor.ActorSystem
-
 
 /** Traits for generic simulations, of which a game like BotWar is an example.
   */

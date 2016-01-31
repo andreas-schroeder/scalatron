@@ -1,7 +1,7 @@
 organization := "Scalatron"
 
-name         := "Scalatron"
+name         := "Scalatron-HackTheTower"
 
-version in Global := "1.1.0.2"
+version in Global := "1.2"
 
-scalaVersion := "2.9.1"
+scalaVersion := "2.11.7"

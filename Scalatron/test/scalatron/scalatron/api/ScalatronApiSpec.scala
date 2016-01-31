@@ -3,13 +3,14 @@ package scalatron.scalatron.api
 import org.specs2._
 import java.io.{IOException, File}
 import akka.actor.ActorSystem
+import org.specs2.matcher.PathMatchers
 import scalatron.core.Scalatron.Constants._
 import scalatron.core.Scalatron
 import ScalatronApiTest._
 import org.specs2.execute.Result
 import scalatron.scalatron.impl.FileUtil
 
-class ScalatronApiSpec extends mutable.Specification
+class ScalatronApiSpec extends mutable.Specification with PathMatchers
 {
     //------------------------------------------------------------------------------------------
     // test (web) user management

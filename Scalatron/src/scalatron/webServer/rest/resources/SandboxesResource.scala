@@ -3,8 +3,7 @@ package scalatron.webServer.rest.resources
 import javax.ws.rs._
 import core.{Response, MediaType}
 import scalatron.core.Scalatron.SandboxState
-import collection.JavaConversions
-import collection.JavaConversions.JMapWrapper
+import collection.JavaConverters._
 import scalatron.webServer.rest.UserSession
 import UserSession.SandboxAttributeKey
 import org.eclipse.jetty.http.HttpStatus
@@ -27,7 +26,7 @@ class SandboxesResource extends ResourceWithUser {
                         userSession -= SandboxAttributeKey
 
                         // extract the arguments, like Map("-x" -> 50, "-y" -> 50)
-                        val argMap = JMapWrapper(startConfig.getConfig).toMap
+                        val argMap = startConfig.getConfig.asScala.toMap
                         val sandbox = user.createSandbox(argMap)
                         val state = sandbox.initialState
                         userSession += SandboxAttributeKey -> state
@@ -146,7 +145,7 @@ class SandboxesResource extends ResourceWithUser {
                         e.id,
                         e.name,
                         e.isMaster,
-                        SandboxesResource.InputCommand(opcode, JavaConversions.mapAsJavaMap(params)),
+                        SandboxesResource.InputCommand(opcode, params.asJava),
                         SandboxesResource.extractOutput(e.mostRecentControlFunctionOutput),
                         e.debugOutput)
                 }).toArray
@@ -204,7 +203,7 @@ object SandboxesResource {
                 e.id,
                 e.name,
                 e.isMaster,
-                SandboxesResource.InputCommand(opcode, JavaConversions.mapAsJavaMap(params)),
+                SandboxesResource.InputCommand(opcode, params.asJava),
                 extractOutput(e.mostRecentControlFunctionOutput),
                 e.debugOutput)
         }).toArray
@@ -221,7 +220,7 @@ object SandboxesResource {
         in.map(e => {
             val op = e._1
             val params = e._2
-            SandboxesResource.InputCommand(op, JavaConversions.mapAsJavaMap(params.toMap))
+            SandboxesResource.InputCommand(op, params.toMap.asJava)
         }).toArray
 
 

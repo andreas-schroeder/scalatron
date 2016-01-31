@@ -51,7 +51,7 @@ case class JSonMap(map: Map[String, Any], outer: JSonOpt) {
       */
     def asStringMap(key: String): Map[String, String] = map.get(key) match {
         case None => throw new IllegalStateException("invalid data (key not found: '" + key + "'): " + outer)
-        case Some(innerMap: Map[String,Any]) => innerMap.map(entry => { (entry._1, entry._2.asInstanceOf[String]) }).toMap
+        case Some(innerMap: Map[String,Any]) => innerMap.map(entry => { (entry._1, entry._2.asInstanceOf[String]) })
         case _ => throw new IllegalStateException("invalid data (value is not a Map for key: '" + key + "'): " + outer)
     }
 

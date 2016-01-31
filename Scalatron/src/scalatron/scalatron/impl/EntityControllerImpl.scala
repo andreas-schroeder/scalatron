@@ -1,9 +1,10 @@
 package scalatron.scalatron.impl
 
-import scalatron.core.EntityController
 import java.util.concurrent.TimeoutException
-import akka.util.duration._
-import akka.dispatch.{ExecutionContext, Await, Future}
+
+import scala.concurrent.duration._
+import scala.concurrent.{Await, Future, ExecutionContext}
+import scalatron.core.EntityController
 
 
 case class EntityControllerImpl(name: String, controlFunction: String => String) extends EntityController {
