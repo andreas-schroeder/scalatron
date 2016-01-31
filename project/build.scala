@@ -121,13 +121,13 @@ object build extends Build {
 
   lazy val all = project("all", ".")
     .settings(Seq(distTask))
-    .aggregate(main, cli, markdown, referenceBot, tagTeamBot)
+    .aggregate(main, cli, markdown, referenceBot, tagTeamBot, debugFileBot, debugStatusBot)
 
 
   lazy val samples = IO.listFiles(file("Scalatron") / "samples") filter (!_.isFile) map {
     sample: File => sample.getName -> project(sample.getName.filter(_.isLetterOrDigit), sample.getName)
       .settings(Seq(
-        scalaSource in Compile <<= baseDirectory / "src",
+        scalaSource in Compile <<= baseDirectory / ("../Scalatron/samples/%s/src" format sample.getName),
         artifactName in packageBin := ((_, _, _) => "ScalatronBot.jar")
       ))
   } toMap
@@ -135,9 +135,11 @@ object build extends Build {
   // TODO How can we do this automatically?!?
   lazy val referenceBot = samples("Example Bot 01 - Reference")
   lazy val tagTeamBot = samples("Example Bot 02 - TagTeam")
+  lazy val debugFileBot = samples("Example Bot 03 - Debug File Logger")
+  lazy val debugStatusBot = samples("Example Bot 04 - Debug Status Logger")
 
   val dist = TaskKey[Unit]("dist", "Makes the distribution zip file")
-  val distTask = dist <<= (version, scalaVersion) map { (scalatronVersion, version) =>
+  val distTask = dist <<= (version, scalaBinaryVersion) map { (scalatronVersion, version) =>
     println("Beginning distribution generation...")
     val distDir = file("dist")
 
@@ -165,7 +167,7 @@ object build extends Build {
     for (sample <- samples.values) {
       if (sampleJar(sample).exists) {
         println("Copying " + sample.base)
-        IO.copyDirectory(sample.base / "src", distSamples / sample.base.getName / "src")
+        IO.copyDirectory(sample.base / ("../Scalatron/samples/%s/src" format sample.base.getName), distSamples / sample.base.getName / "src")
         IO.copyFile(sampleJar(sample), distSamples / sample.base.getName / "ScalatronBot.jar")
       }
     }
@@ -175,7 +177,7 @@ object build extends Build {
 
 
     def markdown(docDir: File, htmlDir: File) = {
-      Seq("java", "-Xmx1G", "-jar", "ScalaMarkdown/target/ScalaMarkdown.jar", docDir.getPath, htmlDir.getPath) !
+      Seq("java", "-Xmx1G", "-jar", ("ScalaMarkdown/target/scala-%s/ScalaMarkdown.jar" format version), docDir.getPath, htmlDir.getPath) !
     }
 
     // generate HTML from Markdown, for /doc and /devdoc
@@ -186,9 +188,9 @@ object build extends Build {
     markdown(scalatronDir / "doc/tutorial", distDir / "webui/tutorial")
 
 
-
+    // Copy service jars
     for (jar <- List("Scalatron", "ScalatronCLI", "ScalatronCore", "BotWar")) {
-      IO.copyFile(file(jar) / "target" / (jar + ".jar"), distDir / "bin" / (jar + ".jar"))
+      IO.copyFile(file(jar) / ("target/scala-%s/" format version) / (jar + ".jar"), distDir / "bin" / (jar + ".jar"))
     }
 
     // This is ridiculous, there has to be be an easier way to zip up a directory
@@ -206,5 +208,7 @@ object build extends Build {
     assembly in cli,
     assembly in markdown,
     packageBin in Compile in referenceBot,
-    packageBin in Compile in tagTeamBot)
+    packageBin in Compile in tagTeamBot,
+    packageBin in Compile in debugFileBot,
+    packageBin in Compile in debugStatusBot)
 }
