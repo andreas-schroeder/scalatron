@@ -157,7 +157,7 @@ object build extends Build {
       IO.copyFile(scalatronDir / fileToCopy, distDir / fileToCopy)
     }
 
-    for (dirToCopy <- List("webui", "doc/pdf")) {
+    for (dirToCopy <- List("webui", "doc/pdf", "bin")) {
       println("Copying " + dirToCopy)
       IO.copyDirectory(scalatronDir / dirToCopy, distDir / dirToCopy)
     }
