@@ -21,7 +21,7 @@ in the public domain. Feel free to use, copy, and improve them!
 
 * clone the Scalatron distribution from https://github.com/hackthetower-london-scalatron/scalatron
 * run `sbt dist` to create the distributable project
-* in the `dist` folder, run `bin/startServer.sh`. NOTE: sometimes the simulator view looks like a blank screen, resize lightly to redraw.
+* in the `dist` folder, run `bin/startServer.sh`. NOTE: sometimes the simulator view looks like a blank screen, resize to redraw.
 * this should automatically open a browser and point it to e.g. `http://localhost:8080`
 * log in as `Administrator`, create a user account for yourself
 * log in as that user, which will take you into a browser-based code editor
