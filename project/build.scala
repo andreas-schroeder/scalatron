@@ -1,3 +1,6 @@
+import java.nio.file._
+import java.nio.file.attribute.PosixFilePermission
+import java.util
 import sbt._
 import Keys._
 import sbtassembly.AssemblyPlugin.autoImport._
@@ -162,6 +165,18 @@ object build extends Build {
       IO.copyDirectory(scalatronDir / dirToCopy, distDir / dirToCopy)
     }
 
+    println("Make .sh files executable...")
+    val perms = new util.HashSet[PosixFilePermission]()
+    perms.add(PosixFilePermission.OWNER_READ)
+    perms.add(PosixFilePermission.OWNER_WRITE)
+    perms.add(PosixFilePermission.OWNER_EXECUTE)
+    perms.add(PosixFilePermission.GROUP_READ)
+    perms.add(PosixFilePermission.GROUP_WRITE)
+    perms.add(PosixFilePermission.GROUP_EXECUTE)
+
+    Files.setPosixFilePermissions(Paths.get((distDir / "bin/updateBots.sh").getAbsolutePath), perms)
+    Files.setPosixFilePermissions(Paths.get((distDir / "bin/startServer.sh").getAbsolutePath), perms)
+
     val distSamples = distDir / "samples"
     def sampleJar(sample: Project) = sample.base / ("target/scala-%s/ScalatronBot.jar" format version)
     for (sample <- samples.values) {
@@ -186,7 +201,6 @@ object build extends Build {
 
     println("Generating /webui/tutorial from /dev/tutorial...")
     markdown(scalatronDir / "doc/tutorial", distDir / "webui/tutorial")
-
 
     // Copy service jars
     for (jar <- List("Scalatron", "ScalatronCLI", "ScalatronCore", "BotWar")) {
