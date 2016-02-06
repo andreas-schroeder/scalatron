@@ -41,6 +41,10 @@ in the public domain. Feel free to use, copy, and improve them!
     * `Tutorial`        -- how to code a bot in Scala
 
 
+## For Admins
+
+* script `updateBots.sh` is provided that reads config in `players.cfg`, pulls code from github and creates corresponding folders for assembled bots.
+
 ## For Developers
 
 * go to https://github.com/hackthetower-london-scalatron to download the Scalatron source code
