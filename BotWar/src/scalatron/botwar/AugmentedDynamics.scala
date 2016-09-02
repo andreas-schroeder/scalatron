@@ -399,7 +399,7 @@ case object AugmentedDynamics extends ((State,Random,Iterable[(Entity.Id,Iterabl
                                 bonk()
                             } else {
                                 // master on slave
-                                if(movingPlayer.entityController == steppedOnPlayer.entityController) {
+                                if(movingPlayer.entityController.name == steppedOnPlayer.entityController.name) {
                                     // master on own slave -- re-absorb
                                     updatedBoard = updatedBoard.removeBot(steppedOnBot.id)
                                     val energyDelta = steppedOnBot.energy
